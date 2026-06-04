@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a reproducible problem with CorePay Money for WooCommerce
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve the plugin. Please include enough detail to reproduce the issue.
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: woocommerce-version
+    attributes:
+      label: WooCommerce version
+      placeholder: 10.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to checkout
+        2. Select CorePay Money
+        3. Complete payment...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or webhook payload
+      description: Remove secrets, customer data, signatures, and tokens before sharing.
+      render: shell

@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# WordPress/package artifacts
+/vendor/
+/node_modules/
+/dist/
+/build/
+*.zip
+*.tar.gz
+
+# Logs and env
+*.log
+.env
+.env.*
+!.env.example
+
+# Tests/coverage
+/coverage/
+.phpunit.result.cache

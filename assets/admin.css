@@ -1,0 +1,15 @@
+.corepay-money-operators input {
+	width: 100%;
+}
+
+.corepay-money-operator-handle {
+	width: 60px;
+	text-align: center;
+	cursor: move;
+	color: #646970;
+}
+
+.corepay-money-operators .ui-sortable-helper {
+	background: #fff;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
