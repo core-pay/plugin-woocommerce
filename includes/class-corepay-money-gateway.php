@@ -21,13 +21,6 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	public $widget_url;
 
 	/**
-	 * Merchant Core ID.
-	 *
-	 * @var string
-	 */
-	public $core_id;
-
-	/**
 	 * Currency mode.
 	 *
 	 * @var string
@@ -74,7 +67,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	 */
 	public function __construct() {
 		$this->id                 = 'corepay_money';
-		$this->icon               = '';
+		$this->icon               = 'https://corecdn.info/mark/64/corepay.svg';
 		$this->has_fields         = false;
 		$this->method_title       = __( 'CorePay Money', 'corepay-money-woocommerce' );
 		$this->method_description = __( 'Process product payments through the CorePay Money hosted widget.', 'corepay-money-woocommerce' );
@@ -96,7 +89,6 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		$this->title          = $this->get_option( 'title', __( 'CorePay Money', 'corepay-money-woocommerce' ) );
 		$this->description    = $this->get_option( 'description', __( 'Pay securely with CorePay Money.', 'corepay-money-woocommerce' ) );
 		$this->widget_url     = $this->get_option( 'widget_url', 'https://corepay.money/widget' );
-		$this->core_id        = $this->get_option( 'core_id', '' );
 		$this->currency_mode  = $this->get_option( 'currency_mode', 'system' );
 		$this->custom_currency = $this->get_option( 'custom_currency', '' );
 		$this->digitize       = 'yes' === $this->get_option( 'digitize', 'yes' );
@@ -142,16 +134,10 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 				'description' => __( 'CorePay Money hosted widget endpoint.', 'corepay-money-woocommerce' ),
 				'default'     => 'https://corepay.money/widget',
 			),
-			'core_id'         => array(
-				'title'       => __( 'Core ID', 'corepay-money-woocommerce' ),
-				'type'        => 'text',
-				'description' => __( 'Merchant identifier returned by ping/coreid.', 'corepay-money-woocommerce' ),
-				'default'     => '',
-			),
 			'operators'       => array(
-				'title'       => __( 'Operators', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Providers', 'corepay-money-woocommerce' ),
 				'type'        => 'operators',
-				'description' => __( 'Add one or more operators. Drag rows to control preference order.', 'corepay-money-woocommerce' ),
+				'description' => __( 'Add one or more providers. Drag rows to control preference order.', 'corepay-money-woocommerce' ),
 			),
 			'currency_mode'   => array(
 				'title'       => __( 'Currency', 'corepay-money-woocommerce' ),
@@ -220,7 +206,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
-		if ( '' === trim( $this->core_id ) || ! $this->has_configured_operator() ) {
+		if ( ! $this->has_configured_operator() ) {
 			return false;
 		}
 
@@ -255,7 +241,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 			$operators = array(
 				array(
 					'id'       => '',
-					'operator' => '',
+					'operator' => 'ping',
 				),
 			);
 		}
@@ -264,15 +250,15 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
-				<label><?php esc_html_e( 'Operators', 'corepay-money-woocommerce' ); ?></label>
+				<label><?php esc_html_e( 'Providers', 'corepay-money-woocommerce' ); ?></label>
 			</th>
 			<td class="forminp">
 				<table class="widefat corepay-money-operators" data-field-key="<?php echo esc_attr( $field_key ); ?>">
 					<thead>
 						<tr>
 							<th class="corepay-money-operator-handle"><?php esc_html_e( 'Order', 'corepay-money-woocommerce' ); ?></th>
-							<th><?php esc_html_e( 'ID', 'corepay-money-woocommerce' ); ?></th>
-							<th><?php esc_html_e( 'Operator', 'corepay-money-woocommerce' ); ?></th>
+							<th><?php esc_html_e( 'ID / CORE ID', 'corepay-money-woocommerce' ); ?></th>
+							<th><?php esc_html_e( 'Provider', 'corepay-money-woocommerce' ); ?></th>
 							<th><?php esc_html_e( 'Actions', 'corepay-money-woocommerce' ); ?></th>
 						</tr>
 					</thead>
@@ -280,15 +266,15 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 						<?php foreach ( $operators as $operator ) : ?>
 							<tr>
 								<td class="corepay-money-operator-handle">☰</td>
-								<td><input type="text" name="<?php echo esc_attr( $field_key ); ?>[id][]" value="<?php echo esc_attr( $operator['id'] ); ?>" placeholder="<?php esc_attr_e( 'coreid result', 'corepay-money-woocommerce' ); ?>" /></td>
-								<td><input type="text" name="<?php echo esc_attr( $field_key ); ?>[operator][]" value="<?php echo esc_attr( $operator['operator'] ); ?>" placeholder="<?php esc_attr_e( 'operator name', 'corepay-money-woocommerce' ); ?>" /></td>
+								<td><input type="text" name="<?php echo esc_attr( $field_key ); ?>[id][]" value="<?php echo esc_attr( $operator['id'] ); ?>" placeholder="<?php esc_attr_e( 'CB…', 'corepay-money-woocommerce' ); ?>" /></td>
+								<td><input type="text" name="<?php echo esc_attr( $field_key ); ?>[operator][]" value="<?php echo esc_attr( $operator['operator'] ); ?>" placeholder="<?php esc_attr_e( 'Provider ID, e.g. ping', 'corepay-money-woocommerce' ); ?>" /></td>
 								<td><button type="button" class="button corepay-money-remove-operator"><?php esc_html_e( 'Delete', 'corepay-money-woocommerce' ); ?></button></td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
 				</table>
-				<p><button type="button" class="button corepay-money-add-operator"><?php esc_html_e( 'Add operator', 'corepay-money-woocommerce' ); ?></button></p>
-				<p class="description"><?php esc_html_e( 'Add one or more operators. Drag rows to reorder or delete rows you no longer use.', 'corepay-money-woocommerce' ); ?></p>
+				<p><button type="button" class="button corepay-money-add-operator"><?php esc_html_e( 'Add provider', 'corepay-money-woocommerce' ); ?></button></p>
+				<p class="description"><?php esc_html_e( 'Add one or more providers. Drag rows to reorder or delete rows you no longer use.', 'corepay-money-woocommerce' ); ?></p>
 			</td>
 		</tr>
 		<?php
@@ -527,6 +513,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	 */
 	public function build_payment_payload( $order, $context = 'checkout' ) {
 		$operator = $this->get_primary_operator();
+		$core_id = is_array( $operator ) && isset( $operator['id'] ) ? $operator['id'] : '';
 		$currency = $this->get_payment_currency();
 		$is_recurring = $this->order_has_subscription( $order ) || 'subscription_renewal' === $context;
 
@@ -547,10 +534,10 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 				'description' => sprintf( /* translators: %s: order number */ __( 'WooCommerce order %s', 'corepay-money-woocommerce' ), $order->get_order_number() ),
 			),
 			'merchant'    => array(
-				'core_id'  => $this->core_id,
+				'core_id'  => $core_id,
 				'operator' => $operator,
 			),
-			'operators'   => $this->operators,
+			'operators'   => $this->get_configured_operators(),
 			'subscriptions' => $this->get_order_subscriptions_payload( $order, $context ),
 			'digitize'    => $this->digitize,
 			'urls'        => array(
@@ -812,7 +799,25 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	 * @return array|null
 	 */
 	private function get_primary_operator() {
-		return isset( $this->operators[0] ) ? $this->operators[0] : null;
+		$operators = $this->get_configured_operators();
+
+		return isset( $operators[0] ) ? $operators[0] : null;
+	}
+
+	/**
+	 * Get provider rows with all required values.
+	 *
+	 * @return array
+	 */
+	private function get_configured_operators() {
+		return array_values(
+			array_filter(
+				$this->operators,
+				function ( $operator ) {
+					return ! empty( $operator['id'] ) && ! empty( $operator['operator'] );
+				}
+			)
+		);
 	}
 
 	/**
@@ -821,13 +826,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	private function has_configured_operator() {
-		foreach ( $this->operators as $operator ) {
-			if ( ! empty( $operator['id'] ) && ! empty( $operator['operator'] ) ) {
-				return true;
-			}
-		}
-
-		return false;
+		return ! empty( $this->get_configured_operators() );
 	}
 
 	/**

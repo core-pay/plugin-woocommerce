@@ -11,13 +11,12 @@ The plugin creates a custom JSON payment payload at checkout, opens the CorePay 
 - WooCommerce payment gateway for product checkout.
 - WooCommerce Subscriptions support for initial subscription payments and renewal orders.
 - Hosted CorePay Money widget integration.
-- Custom JSON payload containing order, merchant, operator, customer, subscription, and callback data.
+- Custom JSON payload containing order, merchant provider, customer, subscription, and callback data.
 - Additional data object is checked against CorePay's 250-character canonical JSON limit.
 - Webhook endpoint for asynchronous payment confirmation.
 - Store currency by default, with an admin override for custom currency.
 - Digitize option enabled by default and sent as `digitize: true`.
-- Merchant Core ID setting.
-- Sortable operator list with drag-to-reorder and delete controls.
+- Sortable provider list with drag-to-reorder and delete controls.
 - Required Ed25519 webhook signature validation against CorePay's well-known JWKS.
 - WooCommerce HPOS compatibility declaration.
 
@@ -35,17 +34,13 @@ The plugin creates a custom JSON payment payload at checkout, opens the CorePay 
 1. Copy this repository into `wp-content/plugins/corepay-money-woocommerce`.
 2. Activate **CorePay Money for WooCommerce** in WordPress Admin → Plugins.
 3. Go to WooCommerce → Settings → Payments → CorePay Money.
-4. Enable the gateway and configure Core ID, operators, currency, and signature key ID.
+4. Enable the gateway and configure at least one complete provider row, currency, and signature key ID.
 
 ## Configuration
 
-### Core ID
+### Providers
 
-Set the merchant Core ID returned by the CorePay `ping/coreid` flow.
-
-### Operators
-
-Add operator rows with an ID and operator name. The first row is the preferred operator and all rows are sent in the custom JSON payload. Drag rows to reorder operators or delete rows to remove them.
+Add provider rows with an ID / CORE ID and Provider ID. The first complete row is the preferred provider, and complete rows are sent in the custom JSON payload. The default provider ID is `ping`. Drag rows to reorder providers or delete rows to remove them.
 
 ### Currency
 
@@ -138,10 +133,10 @@ The widget receives a `custom_json` form field with this shape:
         "description": "WooCommerce order 123"
     },
     "merchant": {
-        "core_id": "merchant-core-id",
+        "core_id": "CB…",
         "operator": {
-            "id": "operator-id",
-            "operator": "operator-name"
+            "id": "CB…",
+            "operator": "ping"
         }
     },
     "operators": [],

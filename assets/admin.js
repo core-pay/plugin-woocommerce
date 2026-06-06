@@ -5,8 +5,8 @@
 		return '' +
 			'<tr>' +
 				'<td class="corepay-money-operator-handle">☰</td>' +
-				'<td><input type="text" name="' + fieldKey + '[id][]" value="" placeholder="coreid result" /></td>' +
-				'<td><input type="text" name="' + fieldKey + '[operator][]" value="" placeholder="operator name" /></td>' +
+				'<td><input type="text" name="' + fieldKey + '[id][]" value="" placeholder="CB…" /></td>' +
+				'<td><input type="text" name="' + fieldKey + '[operator][]" value="" placeholder="Provider ID, e.g. ping" /></td>' +
 				'<td><button type="button" class="button corepay-money-remove-operator">Delete</button></td>' +
 			'</tr>';
 	}
