@@ -475,30 +475,30 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 			return;
 		}
 
-		$payload = $this->build_payment_payload( $order, $this->get_payment_context( $order ) );
+		$operator = $this->get_primary_operator();
 		$widget_url = esc_url( $this->widget_url );
+
+		if ( ! is_array( $operator ) || empty( $operator['id'] ) || empty( $operator['operator'] ) ) {
+			echo esc_html__( 'CorePay Money is not configured for this payment.', 'corepay-money-woocommerce' );
+			return;
+		}
+
+		$target_id = 'corepay-money-widget-' . absint( $order_id );
+		$address = $operator['operator'] . ':' . $operator['id'];
+		$currency = $this->get_payment_currency();
+		$amount = wc_format_decimal( $order->get_total(), wc_get_price_decimals() );
 		?>
 		<div class="corepay-money-widget-wrap">
 			<p><?php esc_html_e( 'Complete your payment in the secure CorePay Money widget.', 'corepay-money-woocommerce' ); ?></p>
-			<form id="corepay-money-widget-form" action="<?php echo $widget_url; ?>" method="post">
-				<input type="hidden" name="custom_json" value="<?php echo esc_attr( wp_json_encode( $payload ) ); ?>" />
-				<noscript><button type="submit" class="button alt"><?php esc_html_e( 'Open CorePay Money', 'corepay-money-woocommerce' ); ?></button></noscript>
-			</form>
-			<iframe id="corepay-money-widget" title="<?php esc_attr_e( 'CorePay Money payment widget', 'corepay-money-woocommerce' ); ?>" src="about:blank" style="width:100%;min-height:720px;border:0;" loading="eager"></iframe>
+			<div id="<?php echo esc_attr( $target_id ); ?>" class="corepay-money-widget-target" style="margin-top:1rem;"></div>
+			<script
+				src="<?php echo $widget_url; ?>"
+				data-target="<?php echo esc_attr( $target_id ); ?>"
+				data-address="<?php echo esc_attr( $address ); ?>"
+				data-currency="<?php echo esc_attr( $currency ); ?>"
+				data-amount="<?php echo esc_attr( $amount ); ?>"
+			></script>
 		</div>
-		<script>
-			(function() {
-				var form = document.getElementById('corepay-money-widget-form');
-				var iframe = document.getElementById('corepay-money-widget');
-
-				if (!form || !iframe) {
-					return;
-				}
-
-				form.target = 'corepay-money-widget';
-				form.submit();
-			}());
-		</script>
 		<?php
 	}
 
