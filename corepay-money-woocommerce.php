@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: CorePay Money for WooCommerce
- * Plugin URI: https://github.com/core-pay/plugin-woocommerce
+ * Plugin URI: https://corepay.money
  * Description: Accept WooCommerce payments through the CorePay Money hosted widget using custom JSON payloads and webhook confirmations.
  * Version: 0.1.0
  * Author: CorePay
@@ -37,6 +37,7 @@ add_action( 'plugins_loaded', 'corepay_money_wc_init', 11 );
 function corepay_money_wc_declare_features() {
 	if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
 		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
 	}
 }
 
@@ -54,6 +55,11 @@ function corepay_money_wc_init() {
 
 	add_filter( 'woocommerce_payment_gateways', 'corepay_money_wc_register_gateway' );
 	add_action( 'woocommerce_api_corepay_money', array( 'CorePay_Money_Webhook', 'handle' ) );
+
+	if ( class_exists( '\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
+		require_once COREPAY_MONEY_WC_PATH . 'includes/class-corepay-money-blocks.php';
+		add_action( 'woocommerce_blocks_payment_method_type_registration', 'corepay_money_wc_register_blocks_payment_method' );
+	}
 }
 
 /**
@@ -65,6 +71,15 @@ function corepay_money_wc_init() {
 function corepay_money_wc_register_gateway( $gateways ) {
 	$gateways[] = 'CorePay_Money_Gateway';
 	return $gateways;
+}
+
+/**
+ * Register gateway with WooCommerce Blocks checkout.
+ *
+ * @param object $payment_method_registry Blocks payment method registry.
+ */
+function corepay_money_wc_register_blocks_payment_method( $payment_method_registry ) {
+	$payment_method_registry->register( new CorePay_Money_Blocks() );
 }
 
 /**
