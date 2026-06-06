@@ -389,9 +389,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		}
 
 		$this->store_payment_payload( $order, $this->get_payment_context( $order ) );
-
-		$order->update_status( 'on-hold', __( 'Awaiting CorePay Money webhook confirmation.', 'corepay-money-woocommerce' ) );
-		wc_reduce_stock_levels( $order_id );
+		$order->add_order_note( __( 'CorePay Money payment payload created. Awaiting hosted widget payment.', 'corepay-money-woocommerce' ) );
 
 		if ( WC()->cart ) {
 			WC()->cart->empty_cart();
