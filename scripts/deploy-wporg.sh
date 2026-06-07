@@ -30,6 +30,7 @@ mkdir -p "${BUILD_DIR}/trunk" "${BUILD_DIR}/assets" "${BUILD_DIR}/tags"
 rsync -av --delete "${ROOT_DIR}/" "${BUILD_DIR}/trunk/" \
 	--exclude='.git' \
 	--exclude='.github' \
+	--exclude='.gitignore' \
 	--exclude='.wordpress-org' \
 	--exclude='scripts' \
 	--exclude='README.md' \

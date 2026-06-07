@@ -6,11 +6,10 @@
  * Version: 0.1.0
  * Author: CorePay
  * Author URI: https://corepay.money
- * Text Domain: corepay-money-woocommerce
- * Domain Path: /languages
+ * Text Domain: corepay-money-for-woocommerce
  * Requires Plugins: woocommerce
  * Requires at least: 6.4
- * Tested up to: 6.9
+ * Tested up to: 7.0
  * Requires PHP: 7.4
  * WC requires at least: 8.0
  * WC tested up to: 10.0
@@ -91,5 +90,5 @@ function corepay_money_wc_missing_woocommerce_notice() {
 		return;
 	}
 
-	echo '<div class="notice notice-error"><p>' . esc_html__( 'CorePay Money for WooCommerce requires WooCommerce to be installed and active.', 'corepay-money-woocommerce' ) . '</p></div>';
+	echo '<div class="notice notice-error"><p>' . esc_html__( 'CorePay Money for WooCommerce requires WooCommerce to be installed and active.', 'corepay-money-for-woocommerce' ) . '</p></div>';
 }

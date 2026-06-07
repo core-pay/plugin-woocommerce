@@ -69,9 +69,9 @@ class CorePay_Money_Webhook {
 		if ( in_array( $status, array( 'paid', 'payment_paid', 'completed', 'complete', 'success', 'succeeded' ), true ) ) {
 			self::complete_order( $order, $gateway, $amount, $currency, $transaction_id );
 		} elseif ( in_array( $status, array( 'failed', 'failure', 'cancelled', 'canceled', 'expired' ), true ) ) {
-			$order->update_status( 'failed', __( 'CorePay Money payment failed or expired.', 'corepay-money-woocommerce' ) );
+			$order->update_status( 'failed', __( 'CorePay Money payment failed or expired.', 'corepay-money-for-woocommerce' ) );
 		} else {
-			$order->add_order_note( sprintf( /* translators: %s: webhook status */ __( 'CorePay Money webhook received with status: %s', 'corepay-money-woocommerce' ), $status ? $status : __( 'unknown', 'corepay-money-woocommerce' ) ) );
+			$order->add_order_note( sprintf( /* translators: %s: webhook status */ __( 'CorePay Money webhook received with status: %s', 'corepay-money-for-woocommerce' ), $status ? $status : __( 'unknown', 'corepay-money-for-woocommerce' ) ) );
 			$order->save();
 		}
 
@@ -342,20 +342,20 @@ class CorePay_Money_Webhook {
 		$paid_amount = null !== $amount ? wc_format_decimal( $amount, wc_get_price_decimals() ) : '';
 
 		if ( '' !== $paid_amount && $paid_amount !== $expected_amount ) {
-			$order->update_status( 'on-hold', sprintf( /* translators: 1: paid amount, 2: expected amount */ __( 'CorePay Money amount mismatch. Paid %1$s, expected %2$s.', 'corepay-money-woocommerce' ), $paid_amount, $expected_amount ) );
+			$order->update_status( 'on-hold', sprintf( /* translators: 1: paid amount, 2: expected amount */ __( 'CorePay Money amount mismatch. Paid %1$s, expected %2$s.', 'corepay-money-for-woocommerce' ), $paid_amount, $expected_amount ) );
 			return;
 		}
 
 		if ( '' !== $currency && $currency !== $expected_currency ) {
-			$order->update_status( 'on-hold', sprintf( /* translators: 1: paid currency, 2: expected currency */ __( 'CorePay Money currency mismatch. Paid %1$s, expected %2$s.', 'corepay-money-woocommerce' ), $currency, $expected_currency ) );
+			$order->update_status( 'on-hold', sprintf( /* translators: 1: paid currency, 2: expected currency */ __( 'CorePay Money currency mismatch. Paid %1$s, expected %2$s.', 'corepay-money-for-woocommerce' ), $currency, $expected_currency ) );
 			return;
 		}
 
 		if ( ! $order->is_paid() ) {
 			$order->payment_complete( $transaction_id );
-			$order->add_order_note( __( 'CorePay Money webhook confirmed payment.', 'corepay-money-woocommerce' ) );
+			$order->add_order_note( __( 'CorePay Money webhook confirmed payment.', 'corepay-money-for-woocommerce' ) );
 		} else {
-			$order->add_order_note( __( 'Duplicate CorePay Money payment webhook ignored; order is already paid.', 'corepay-money-woocommerce' ) );
+			$order->add_order_note( __( 'Duplicate CorePay Money payment webhook ignored; order is already paid.', 'corepay-money-for-woocommerce' ) );
 			$order->save();
 		}
 	}

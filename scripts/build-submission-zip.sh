@@ -19,6 +19,7 @@ mkdir -p "${PACKAGE_DIR}"
 rsync -av "${ROOT_DIR}/" "${PACKAGE_DIR}/" \
 	--exclude='.git' \
 	--exclude='.github' \
+	--exclude='.gitignore' \
 	--exclude='.wordpress-org' \
 	--exclude='scripts' \
 	--exclude='README.md' \

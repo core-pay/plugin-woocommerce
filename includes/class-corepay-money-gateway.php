@@ -69,8 +69,8 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		$this->id                 = 'corepay_money';
 		$this->icon               = 'https://corecdn.info/mark/64/corepay.svg';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'CorePay Money', 'corepay-money-woocommerce' );
-		$this->method_description = __( 'Process product payments through the CorePay Money hosted widget.', 'corepay-money-woocommerce' );
+		$this->method_title       = __( 'CorePay Money', 'corepay-money-for-woocommerce' );
+		$this->method_description = __( 'Process product payments through the CorePay Money hosted widget.', 'corepay-money-for-woocommerce' );
 		$this->supports           = array(
 			'products',
 			'subscriptions',
@@ -86,8 +86,8 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		$this->init_settings();
 
 		$this->enabled        = $this->get_option( 'enabled', 'no' );
-		$this->title          = $this->get_option( 'title', __( 'CorePay Money', 'corepay-money-woocommerce' ) );
-		$this->description    = $this->get_option( 'description', __( 'Pay securely with CorePay Money.', 'corepay-money-woocommerce' ) );
+		$this->title          = $this->get_option( 'title', __( 'CorePay Money', 'corepay-money-for-woocommerce' ) );
+		$this->description    = $this->get_option( 'description', __( 'Pay securely with CorePay Money.', 'corepay-money-for-woocommerce' ) );
 		$this->widget_url     = $this->get_option( 'widget_url', 'https://corepay.money/widget' );
 		$this->currency_mode  = $this->get_option( 'currency_mode', 'system' );
 		$this->custom_currency = $this->get_option( 'custom_currency', '' );
@@ -109,69 +109,69 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	public function init_form_fields() {
 		$this->form_fields = array(
 			'enabled'         => array(
-				'title'   => __( 'Enable/Disable', 'corepay-money-woocommerce' ),
+				'title'   => __( 'Enable/Disable', 'corepay-money-for-woocommerce' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable CorePay Money', 'corepay-money-woocommerce' ),
+				'label'   => __( 'Enable CorePay Money', 'corepay-money-for-woocommerce' ),
 				'default' => 'no',
 			),
 			'title'           => array(
-				'title'       => __( 'Title', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Title', 'corepay-money-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'Payment method title shown at checkout.', 'corepay-money-woocommerce' ),
-				'default'     => __( 'CorePay Money', 'corepay-money-woocommerce' ),
+				'description' => __( 'Payment method title shown at checkout.', 'corepay-money-for-woocommerce' ),
+				'default'     => __( 'CorePay Money', 'corepay-money-for-woocommerce' ),
 				'desc_tip'    => true,
 			),
 			'description'     => array(
-				'title'       => __( 'Description', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Description', 'corepay-money-for-woocommerce' ),
 				'type'        => 'textarea',
-				'description' => __( 'Payment method description shown at checkout.', 'corepay-money-woocommerce' ),
-				'default'     => __( 'Pay securely with CorePay Money.', 'corepay-money-woocommerce' ),
+				'description' => __( 'Payment method description shown at checkout.', 'corepay-money-for-woocommerce' ),
+				'default'     => __( 'Pay securely with CorePay Money.', 'corepay-money-for-woocommerce' ),
 				'desc_tip'    => true,
 			),
 			'widget_url'      => array(
-				'title'       => __( 'Widget URL', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Widget URL', 'corepay-money-for-woocommerce' ),
 				'type'        => 'url',
-				'description' => __( 'CorePay Money hosted widget endpoint.', 'corepay-money-woocommerce' ),
+				'description' => __( 'CorePay Money hosted widget endpoint.', 'corepay-money-for-woocommerce' ),
 				'default'     => 'https://corepay.money/widget',
 			),
 			'operators'       => array(
-				'title'       => __( 'Providers', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Providers', 'corepay-money-for-woocommerce' ),
 				'type'        => 'operators',
-				'description' => __( 'Add one or more providers. Drag rows to control preference order.', 'corepay-money-woocommerce' ),
+				'description' => __( 'Add one or more providers. Drag rows to control preference order.', 'corepay-money-for-woocommerce' ),
 			),
 			'currency_mode'   => array(
-				'title'       => __( 'Currency', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Currency', 'corepay-money-for-woocommerce' ),
 				'type'        => 'select',
-				'description' => __( 'Use the WooCommerce store currency or override it for CorePay.', 'corepay-money-woocommerce' ),
+				'description' => __( 'Use the WooCommerce store currency or override it for CorePay.', 'corepay-money-for-woocommerce' ),
 				'default'     => 'system',
 				'options'     => array(
-					'system' => __( 'Use WooCommerce store currency', 'corepay-money-woocommerce' ),
-					'custom' => __( 'Use custom currency', 'corepay-money-woocommerce' ),
+					'system' => __( 'Use WooCommerce store currency', 'corepay-money-for-woocommerce' ),
+					'custom' => __( 'Use custom currency', 'corepay-money-for-woocommerce' ),
 				),
 			),
 			'custom_currency' => array(
-				'title'       => __( 'Custom Currency', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Custom Currency', 'corepay-money-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'Three-letter ISO currency code, used only when Currency is set to custom.', 'corepay-money-woocommerce' ),
+				'description' => __( 'Three-letter ISO currency code, used only when Currency is set to custom.', 'corepay-money-for-woocommerce' ),
 				'default'     => '',
 			),
 			'digitize'        => array(
-				'title'       => __( 'Digitize', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Digitize', 'corepay-money-for-woocommerce' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Keep digitize option enabled for CorePay payloads', 'corepay-money-woocommerce' ),
-				'description' => __( 'Checked by default. The value is sent as digitize: true in custom JSON.', 'corepay-money-woocommerce' ),
+				'label'       => __( 'Keep digitize option enabled for CorePay payloads', 'corepay-money-for-woocommerce' ),
+				'description' => __( 'Checked by default. The value is sent as digitize: true in custom JSON.', 'corepay-money-for-woocommerce' ),
 				'default'     => 'yes',
 			),
 			'signature_key_id' => array(
-				'title'       => __( 'Signature Key ID', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Signature Key ID', 'corepay-money-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'CorePay JWKS key ID used to verify webhook signatures from https://corepay.money/.well-known/jwks.json.', 'corepay-money-woocommerce' ),
+				'description' => __( 'CorePay JWKS key ID used to verify webhook signatures from https://corepay.money/.well-known/jwks.json.', 'corepay-money-for-woocommerce' ),
 				'default'     => 'corepay-key-1',
 			),
 			'debug'           => array(
-				'title'       => __( 'Debug Log', 'corepay-money-woocommerce' ),
+				'title'       => __( 'Debug Log', 'corepay-money-for-woocommerce' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Enable WooCommerce logger entries', 'corepay-money-woocommerce' ),
+				'label'       => __( 'Enable WooCommerce logger entries', 'corepay-money-for-woocommerce' ),
 				'default'     => 'no',
 			),
 		);
@@ -223,8 +223,8 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	public function admin_options() {
 		parent::admin_options();
 
-		echo '<h3>' . esc_html__( 'Webhook', 'corepay-money-woocommerce' ) . '</h3>';
-		echo '<p>' . esc_html__( 'Configure CorePay Money to send payment events to this URL:', 'corepay-money-woocommerce' ) . '</p>';
+		echo '<h3>' . esc_html__( 'Webhook', 'corepay-money-for-woocommerce' ) . '</h3>';
+		echo '<p>' . esc_html__( 'Configure CorePay Money to send payment events to this URL:', 'corepay-money-for-woocommerce' ) . '</p>';
 		echo '<code>' . esc_html( WC()->api_request_url( 'corepay_money' ) ) . '</code>';
 	}
 
@@ -250,31 +250,31 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
-				<label><?php esc_html_e( 'Providers', 'corepay-money-woocommerce' ); ?></label>
+				<label><?php esc_html_e( 'Providers', 'corepay-money-for-woocommerce' ); ?></label>
 			</th>
 			<td class="forminp">
 				<table class="widefat corepay-money-operators" data-field-key="<?php echo esc_attr( $field_key ); ?>">
 					<thead>
 						<tr>
-							<th class="corepay-money-operator-handle"><?php esc_html_e( 'Order', 'corepay-money-woocommerce' ); ?></th>
-							<th><?php esc_html_e( 'ID / CORE ID', 'corepay-money-woocommerce' ); ?></th>
-							<th><?php esc_html_e( 'Provider', 'corepay-money-woocommerce' ); ?></th>
-							<th><?php esc_html_e( 'Actions', 'corepay-money-woocommerce' ); ?></th>
+							<th class="corepay-money-operator-handle"><?php esc_html_e( 'Order', 'corepay-money-for-woocommerce' ); ?></th>
+							<th><?php esc_html_e( 'ID / CORE ID', 'corepay-money-for-woocommerce' ); ?></th>
+							<th><?php esc_html_e( 'Provider', 'corepay-money-for-woocommerce' ); ?></th>
+							<th><?php esc_html_e( 'Actions', 'corepay-money-for-woocommerce' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach ( $operators as $operator ) : ?>
 							<tr>
 								<td class="corepay-money-operator-handle">☰</td>
-								<td><input type="text" name="<?php echo esc_attr( $field_key ); ?>[id][]" value="<?php echo esc_attr( $operator['id'] ); ?>" placeholder="<?php esc_attr_e( 'CB…', 'corepay-money-woocommerce' ); ?>" /></td>
-								<td><input type="text" name="<?php echo esc_attr( $field_key ); ?>[operator][]" value="<?php echo esc_attr( $operator['operator'] ); ?>" placeholder="<?php esc_attr_e( 'Provider ID, e.g. ping', 'corepay-money-woocommerce' ); ?>" /></td>
-								<td><button type="button" class="button corepay-money-remove-operator"><?php esc_html_e( 'Delete', 'corepay-money-woocommerce' ); ?></button></td>
+								<td><input type="text" name="<?php echo esc_attr( $field_key ); ?>[id][]" value="<?php echo esc_attr( $operator['id'] ); ?>" placeholder="<?php esc_attr_e( 'CB…', 'corepay-money-for-woocommerce' ); ?>" /></td>
+								<td><input type="text" name="<?php echo esc_attr( $field_key ); ?>[operator][]" value="<?php echo esc_attr( $operator['operator'] ); ?>" placeholder="<?php esc_attr_e( 'Provider ID, e.g. ping', 'corepay-money-for-woocommerce' ); ?>" /></td>
+								<td><button type="button" class="button corepay-money-remove-operator"><?php esc_html_e( 'Delete', 'corepay-money-for-woocommerce' ); ?></button></td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
 				</table>
-				<p><button type="button" class="button corepay-money-add-operator"><?php esc_html_e( 'Add provider', 'corepay-money-woocommerce' ); ?></button></p>
-				<p class="description"><?php esc_html_e( 'Add one or more providers. Drag rows to reorder or delete rows you no longer use.', 'corepay-money-woocommerce' ); ?></p>
+				<p><button type="button" class="button corepay-money-add-operator"><?php esc_html_e( 'Add provider', 'corepay-money-for-woocommerce' ); ?></button></p>
+				<p class="description"><?php esc_html_e( 'Add one or more providers. Drag rows to reorder or delete rows you no longer use.', 'corepay-money-for-woocommerce' ); ?></p>
 			</td>
 		</tr>
 		<?php
@@ -363,7 +363,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		$order = wc_get_order( $order_id );
 
 		if ( ! $order ) {
-			wc_add_notice( __( 'Unable to create CorePay payment for this order.', 'corepay-money-woocommerce' ), 'error' );
+			wc_add_notice( __( 'Unable to create CorePay payment for this order.', 'corepay-money-for-woocommerce' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
@@ -389,7 +389,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		}
 
 		$this->store_payment_payload( $order, $this->get_payment_context( $order ) );
-		$order->add_order_note( __( 'CorePay Money payment payload created. Awaiting hosted widget payment.', 'corepay-money-woocommerce' ) );
+		$order->add_order_note( __( 'CorePay Money payment payload created. Awaiting hosted widget payment.', 'corepay-money-for-woocommerce' ) );
 
 		if ( WC()->cart ) {
 			WC()->cart->empty_cart();
@@ -421,12 +421,12 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 
 		if ( 0 >= (float) $renewal_total ) {
 			$renewal_order->payment_complete();
-			$renewal_order->add_order_note( __( 'CorePay Money completed zero-total subscription renewal.', 'corepay-money-woocommerce' ) );
+			$renewal_order->add_order_note( __( 'CorePay Money completed zero-total subscription renewal.', 'corepay-money-for-woocommerce' ) );
 			return;
 		}
 
 		$payload = $this->store_payment_payload( $renewal_order, 'subscription_renewal' );
-		$renewal_order->update_status( 'on-hold', __( 'Awaiting CorePay Money recurring payment webhook confirmation.', 'corepay-money-woocommerce' ) );
+		$renewal_order->update_status( 'on-hold', __( 'Awaiting CorePay Money recurring payment webhook confirmation.', 'corepay-money-for-woocommerce' ) );
 
 		/**
 		 * Fires when a CorePay recurring payment payload is ready to be sent.
@@ -459,7 +459,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		$original_order->update_meta_data( '_corepay_money_payment_method_changed', current_time( 'mysql' ) );
 		$original_order->save();
 
-		$renewal_order->add_order_note( __( 'CorePay Money updated the future recurring payment method after a failed renewal payment.', 'corepay-money-woocommerce' ) );
+		$renewal_order->add_order_note( __( 'CorePay Money updated the future recurring payment method after a failed renewal payment.', 'corepay-money-for-woocommerce' ) );
 	}
 
 	/**
@@ -471,7 +471,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		$order = wc_get_order( $order_id );
 
 		if ( ! $order ) {
-			echo esc_html__( 'Order not found.', 'corepay-money-woocommerce' );
+			echo esc_html__( 'Order not found.', 'corepay-money-for-woocommerce' );
 			return;
 		}
 
@@ -479,7 +479,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		$widget_url = esc_url( $this->widget_url );
 
 		if ( ! is_array( $operator ) || empty( $operator['id'] ) || empty( $operator['operator'] ) ) {
-			echo esc_html__( 'CorePay Money is not configured for this payment.', 'corepay-money-woocommerce' );
+			echo esc_html__( 'CorePay Money is not configured for this payment.', 'corepay-money-for-woocommerce' );
 			return;
 		}
 
@@ -489,7 +489,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		$amount = wc_format_decimal( $order->get_total(), wc_get_price_decimals() );
 		?>
 		<div class="corepay-money-widget-wrap">
-			<p><?php esc_html_e( 'Complete your payment in the secure CorePay Money widget.', 'corepay-money-woocommerce' ); ?></p>
+			<p><?php esc_html_e( 'Complete your payment in the secure CorePay Money widget.', 'corepay-money-for-woocommerce' ); ?></p>
 			<div id="<?php echo esc_attr( $target_id ); ?>" class="corepay-money-widget-target" style="margin-top:1rem;"></div>
 			<script
 				src="<?php echo $widget_url; ?>"
@@ -529,7 +529,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 				'key'         => $order->get_order_key(),
 				'amount'      => wc_format_decimal( $order->get_total(), wc_get_price_decimals() ),
 				'currency'    => $currency,
-				'description' => sprintf( /* translators: %s: order number */ __( 'WooCommerce order %s', 'corepay-money-woocommerce' ), $order->get_order_number() ),
+				'description' => sprintf( /* translators: %s: order number */ __( 'WooCommerce order %s', 'corepay-money-for-woocommerce' ), $order->get_order_number() ),
 			),
 			'merchant'    => array(
 				'core_id'  => $core_id,
@@ -571,7 +571,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	 */
 	private function get_additional_data() {
 		$data = array(
-			'plugin'  => 'corepay-money-woocommerce',
+			'plugin'  => 'corepay-money-for-woocommerce',
 			'shop'    => $this->get_shop_organization(),
 			'version' => COREPAY_MONEY_WC_VERSION,
 		);
@@ -581,7 +581,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		}
 
 		$data = array(
-			'plugin' => 'corepay-money-woocommerce',
+			'plugin' => 'corepay-money-for-woocommerce',
 			'shop'   => $this->get_shop_organization(),
 		);
 
@@ -590,7 +590,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		}
 
 		$data = array(
-			'plugin' => 'corepay-money-woocommerce',
+			'plugin' => 'corepay-money-for-woocommerce',
 		);
 
 		return $this->is_canonical_json_under_limit( $data, 250 ) ? $data : array();
