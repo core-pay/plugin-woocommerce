@@ -19,6 +19,7 @@ Icon
 /vendor/
 /node_modules/
 /dist/
+/.dist/
 /build/
 *.zip
 *.tar.gz
