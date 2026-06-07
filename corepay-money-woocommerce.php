@@ -10,11 +10,12 @@
  * Domain Path: /languages
  * Requires Plugins: woocommerce
  * Requires at least: 6.4
+ * Tested up to: 6.9
  * Requires PHP: 7.4
  * WC requires at least: 8.0
  * WC tested up to: 10.0
- * License: CORE
- * License URI: https://github.com/bchainhub/core-license/blob/main/LICENSE
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
  * @package CorePayMoneyWooCommerce
  */

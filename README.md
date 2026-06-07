@@ -83,8 +83,8 @@ Verification flow:
 ## Payment flow
 
 1. Customer selects **CorePay Money** at WooCommerce checkout.
-2. WooCommerce creates the order and sets it to `on-hold`.
-3. The plugin builds a `custom_json` payload and posts it into the CorePay hosted widget.
+2. WooCommerce creates the order and redirects the customer to the order payment page.
+3. The plugin renders the CorePay hosted widget using the configured provider row, order amount, and currency.
 4. CorePay processes the payment.
 5. CorePay sends a JSON webhook to the WooCommerce callback URL.
 6. The plugin validates the CorePay signature, order key, amount, and currency.
@@ -252,4 +252,4 @@ zip -r corepay-money-woocommerce.zip . -x '*.git*' 'node_modules/*' 'vendor/*'
 
 ## License
 
-Licensed under the [CORE License](https://github.com/bchainhub/core-license/blob/main/LICENSE).
+Licensed under the [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html).
