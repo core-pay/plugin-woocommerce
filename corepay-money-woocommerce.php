@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: CorePay Money for WooCommerce
- * Plugin URI: https://corepay.money
+ * Plugin URI: https://github.com/core-pay/plugin-woocommerce
  * Description: Accept WooCommerce payments through the CorePay Money hosted widget using custom JSON payloads and webhook confirmations.
  * Version: 0.1.0
  * Author: CorePay
