@@ -244,11 +244,14 @@ Run PHP syntax checks from the plugin root:
 find . -name '*.php' -print0 | xargs -0 -n1 php -l
 ```
 
-Package for WordPress upload:
+This repository uses the standard plugin-root layout for Git development:
 
-```sh
-zip -r corepay-money-woocommerce.zip . -x '*.git*' 'node_modules/*' 'vendor/*'
-```
+- `corepay-money-woocommerce.php` is the main plugin file.
+- `includes` contains PHP classes.
+- `assets` contains runtime plugin assets and WordPress.org listing assets.
+- `readme.txt` contains WordPress.org directory metadata.
+
+When publishing to WordPress.org SVN, copy the plugin files into SVN `trunk`, copy listing assets into SVN top-level `assets`, and create release tags from `trunk`.
 
 ## License
 

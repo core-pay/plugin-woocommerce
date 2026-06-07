@@ -50,6 +50,8 @@ The widget receives configured provider IDs, payment currency, and payment amoun
 Use of this plugin requires a CorePay Money account/provider configuration. See CorePay Money for service terms and privacy details:
 
 * https://corepay.money
+* https://corepay.money/terms/service
+* https://corepay.money/terms/privacy
 
 == Installation ==
 
@@ -83,6 +85,14 @@ Use the webhook URL shown on the CorePay Money payment settings page. It follows
 = Is PHP sodium required? =
 
 Yes. CorePay webhook signatures use Ed25519 / EdDSA verification, which requires PHP sodium support.
+
+== Screenshots ==
+
+1. CorePay Money selected as the payment method in WooCommerce checkout.
+2. CorePay Money hosted widget rendered on the WooCommerce order payment page.
+3. CorePay Money plugin installed and active in WordPress admin.
+4. CorePay Money enabled in WooCommerce payment providers.
+5. CorePay Money gateway settings with provider configuration.
 
 == Changelog ==
 
