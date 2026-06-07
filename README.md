@@ -248,10 +248,17 @@ This repository uses the standard plugin-root layout for Git development:
 
 - `corepay-money-woocommerce.php` is the main plugin file.
 - `includes` contains PHP classes.
-- `assets` contains runtime plugin assets and WordPress.org listing assets.
+- `assets` contains plugin runtime CSS and JavaScript used by the plugin, such as `assets/admin.css`, `assets/admin.js`, and `assets/blocks.js`.
+- `.wordpress-org/assets` contains WordPress.org-only directory assets such as icons, banners, and screenshots.
 - `readme.txt` contains WordPress.org directory metadata.
 
-When publishing to WordPress.org SVN, copy the plugin files into SVN `trunk`, copy listing assets into SVN top-level `assets`, and create release tags from `trunk`.
+Deploy to WordPress.org SVN:
+
+```sh
+npm run deploy:wporg -- 0.1.0
+```
+
+The deployment script syncs plugin files into SVN `trunk`, syncs `.wordpress-org/assets` into SVN top-level `assets`, creates a version tag, shows `svn status`, and commits.
 
 ## License
 

@@ -23,6 +23,18 @@ Icon
 *.zip
 *.tar.gz
 
+# Lock files
+package-lock.json
+npm-shrinkwrap.json
+yarn.lock
+pnpm-lock.yaml
+bun.lock
+bun.lockb
+composer.lock
+Gemfile.lock
+Pipfile.lock
+poetry.lock
+
 # Logs and env
 *.log
 .env
