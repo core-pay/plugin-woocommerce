@@ -14,7 +14,7 @@ The plugin creates a custom JSON payment payload at checkout, opens the CorePay 
 - Custom JSON payload containing order, merchant provider, customer, subscription, and callback data.
 - Additional data object is checked against CorePay's 250-character canonical JSON limit.
 - Webhook endpoint for asynchronous payment confirmation.
-- Store currency by default, with an admin override for custom currency.
+- Store currency by default, with an admin override for a custom CorePay asset and store-currency fiat quote.
 - Digitize option enabled by default and sent as `digitize: true`.
 - Sortable provider list with drag-to-reorder and delete controls.
 - Required Ed25519 webhook signature validation against CorePay's well-known JWKS.
@@ -44,7 +44,7 @@ Add provider rows with an ID / CORE ID and Provider ID. The first complete row i
 
 ### Currency
 
-By default, the plugin sends the WooCommerce store currency. Shop admins can switch to a custom three-letter currency code if CorePay should receive a different currency.
+By default, the plugin sends the WooCommerce store currency as the CorePay asset. Shop admins can switch to a custom CorePay asset code from 1 to 6 characters, such as `BTC`, `CTN`, or `XCB`; the hosted widget still uses the WooCommerce store currency as the fiat quote that the customer pays.
 
 ### Digitize
 
