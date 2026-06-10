@@ -142,7 +142,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 			'currency_mode'   => array(
 				'title'       => __( 'Currency', 'corepay-money-for-woocommerce' ),
 				'type'        => 'select',
-				'description' => __( 'Use the WooCommerce store currency or override it for CorePay.', 'corepay-money-for-woocommerce' ),
+				'description' => __( 'Use the WooCommerce store currency, or choose a custom CorePay asset while quoting the WooCommerce currency.', 'corepay-money-for-woocommerce' ),
 				'default'     => 'system',
 				'options'     => array(
 					'system' => __( 'Use WooCommerce store currency', 'corepay-money-for-woocommerce' ),
@@ -152,7 +152,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 			'custom_currency' => array(
 				'title'       => __( 'Custom Currency', 'corepay-money-for-woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'Three-letter ISO currency code, used only when Currency is set to custom.', 'corepay-money-for-woocommerce' ),
+				'description' => __( 'CorePay asset code, 1 to 6 characters, used only when Currency is set to custom. The WooCommerce store currency is still used as the fiat quote.', 'corepay-money-for-woocommerce' ),
 				'default'     => '',
 			),
 			'digitize'        => array(
@@ -210,7 +210,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 			return false;
 		}
 
-		if ( 'custom' === $this->currency_mode && 3 !== strlen( $this->custom_currency ) ) {
+		if ( 'custom' === $this->currency_mode && ! $this->is_valid_custom_currency( $this->custom_currency ) ) {
 			return false;
 		}
 
@@ -322,7 +322,17 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	 */
 	public function validate_custom_currency_field( $key, $value ) {
 		unset( $key );
-		return strtoupper( substr( preg_replace( '/[^A-Za-z]/', '', (string) $value ), 0, 3 ) );
+		return strtoupper( substr( preg_replace( '/[^A-Za-z0-9]/', '', (string) $value ), 0, 6 ) );
+	}
+
+	/**
+	 * Check custom CorePay asset value.
+	 *
+	 * @param string $value Asset value.
+	 * @return bool
+	 */
+	private function is_valid_custom_currency( $value ) {
+		return 1 === preg_match( '/^[A-Z0-9]{1,6}$/', (string) $value );
 	}
 
 	/**
@@ -486,6 +496,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		$target_id = 'corepay-money-widget-' . absint( $order_id );
 		$address = $operator['operator'] . ':' . $operator['id'];
 		$currency = $this->get_payment_currency();
+		$fiat_currency = $this->get_fiat_quote_currency( $order );
 		$amount = wc_format_decimal( $order->get_total(), wc_get_price_decimals() );
 		?>
 		<div class="corepay-money-widget-wrap">
@@ -497,6 +508,10 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 				data-address="<?php echo esc_attr( $address ); ?>"
 				data-currency="<?php echo esc_attr( $currency ); ?>"
 				data-amount="<?php echo esc_attr( $amount ); ?>"
+				<?php if ( $fiat_currency ) : ?>
+					data-digitize="<?php echo esc_attr( $this->digitize ? '1' : '0' ); ?>"
+					data-fiat="<?php echo esc_attr( $fiat_currency ); ?>"
+				<?php endif; ?>
 			></script>
 		</div>
 		<?php
@@ -512,8 +527,21 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	public function build_payment_payload( $order, $context = 'checkout' ) {
 		$operator = $this->get_primary_operator();
 		$core_id = is_array( $operator ) && isset( $operator['id'] ) ? $operator['id'] : '';
-		$currency = $this->get_payment_currency();
+		$currency = $this->get_order_currency( $order );
+		$asset = $this->get_payment_currency();
 		$is_recurring = $this->order_has_subscription( $order ) || 'subscription_renewal' === $context;
+		$order_payload = array(
+			'id'          => (string) $order->get_id(),
+			'number'      => $order->get_order_number(),
+			'key'         => $order->get_order_key(),
+			'amount'      => wc_format_decimal( $order->get_total(), wc_get_price_decimals() ),
+			'currency'    => $currency,
+			'description' => sprintf( /* translators: %s: order number */ __( 'WooCommerce order %s', 'corepay-money-for-woocommerce' ), $order->get_order_number() ),
+		);
+
+		if ( $asset !== $currency ) {
+			$order_payload['asset'] = $asset;
+		}
 
 		return array(
 			'provider'    => 'woocommerce',
@@ -523,14 +551,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 				'type'      => $context,
 				'recurring' => $is_recurring,
 			),
-			'order'       => array(
-				'id'          => (string) $order->get_id(),
-				'number'      => $order->get_order_number(),
-				'key'         => $order->get_order_key(),
-				'amount'      => wc_format_decimal( $order->get_total(), wc_get_price_decimals() ),
-				'currency'    => $currency,
-				'description' => sprintf( /* translators: %s: order number */ __( 'WooCommerce order %s', 'corepay-money-for-woocommerce' ), $order->get_order_number() ),
-			),
+			'order'       => $order_payload,
 			'merchant'    => array(
 				'core_id'  => $core_id,
 				'operator' => $operator,
@@ -705,18 +726,26 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 				continue;
 			}
 
-			$payload[] = array(
+			$currency = $this->get_order_currency( $subscription );
+			$asset = $this->get_payment_currency();
+			$subscription_payload = array(
 				'id'             => (string) $subscription->get_id(),
 				'number'         => $subscription->get_order_number(),
 				'status'         => $subscription->get_status(),
 				'billing_period' => method_exists( $subscription, 'get_billing_period' ) ? $subscription->get_billing_period() : '',
 				'billing_interval' => method_exists( $subscription, 'get_billing_interval' ) ? (int) $subscription->get_billing_interval() : 0,
 				'total'          => wc_format_decimal( $subscription->get_total(), wc_get_price_decimals() ),
-				'currency'       => $this->get_payment_currency(),
+				'currency'       => $currency,
 				'start_date'     => method_exists( $subscription, 'get_date' ) ? $subscription->get_date( 'start' ) : '',
 				'next_payment'   => method_exists( $subscription, 'get_date' ) ? $subscription->get_date( 'next_payment' ) : '',
 				'end_date'       => method_exists( $subscription, 'get_date' ) ? $subscription->get_date( 'end' ) : '',
 			);
+
+			if ( $asset !== $currency ) {
+				$subscription_payload['asset'] = $asset;
+			}
+
+			$payload[] = $subscription_payload;
 		}
 
 		return $payload;
@@ -789,6 +818,34 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 		}
 
 		return get_woocommerce_currency();
+	}
+
+	/**
+	 * Get WooCommerce order currency for fiat amounts.
+	 *
+	 * @param WC_Order|null $order WooCommerce order.
+	 * @return string
+	 */
+	public function get_order_currency( $order = null ) {
+		if ( $order instanceof WC_Order && method_exists( $order, 'get_currency' ) ) {
+			return $order->get_currency();
+		}
+
+		return get_woocommerce_currency();
+	}
+
+	/**
+	 * Get fiat quote currency when using a custom CorePay asset.
+	 *
+	 * @param WC_Order|null $order WooCommerce order.
+	 * @return string
+	 */
+	public function get_fiat_quote_currency( $order = null ) {
+		if ( 'custom' === $this->currency_mode && '' !== $this->custom_currency ) {
+			return $this->get_order_currency( $order );
+		}
+
+		return '';
 	}
 
 	/**

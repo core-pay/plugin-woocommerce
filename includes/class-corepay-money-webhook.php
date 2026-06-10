@@ -338,7 +338,7 @@ class CorePay_Money_Webhook {
 	 */
 	private static function complete_order( $order, $gateway, $amount, $currency, $transaction_id ) {
 		$expected_amount = wc_format_decimal( $order->get_total(), wc_get_price_decimals() );
-		$expected_currency = $gateway->get_payment_currency();
+		$expected_currency = method_exists( $gateway, 'get_order_currency' ) ? $gateway->get_order_currency( $order ) : $gateway->get_payment_currency();
 		$paid_amount = null !== $amount ? wc_format_decimal( $amount, wc_get_price_decimals() ) : '';
 
 		if ( '' !== $paid_amount && $paid_amount !== $expected_amount ) {

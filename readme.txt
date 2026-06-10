@@ -24,7 +24,7 @@ The plugin creates WooCommerce orders, renders the CorePay Money hosted widget o
 * WooCommerce Subscriptions support for initial subscription payments and renewal orders.
 * Hosted CorePay Money widget integration.
 * Sortable provider list with drag-to-reorder and delete controls.
-* Store currency by default, with an admin override for custom currency.
+* Store currency by default, with an admin override for a custom CorePay asset and store-currency fiat quote.
 * Digitize option enabled by default.
 * Required Ed25519 webhook signature validation against CorePay's well-known JWKS.
 * WooCommerce HPOS compatibility declaration.
@@ -66,7 +66,7 @@ Use of this plugin requires a CorePay Money account/provider configuration. See 
 
 = Why does the payment method not appear at checkout? =
 
-The gateway must be enabled and at least one provider row must have both an ID / CORE ID and Provider ID. If custom currency mode is enabled, the custom currency must be a three-letter code.
+The gateway must be enabled and at least one provider row must have both an ID / CORE ID and Provider ID. If custom currency mode is enabled, the custom CorePay asset must be 1 to 6 characters; the WooCommerce store currency is still used as the fiat quote.
 
 = Does this support WooCommerce Checkout Blocks? =
 
