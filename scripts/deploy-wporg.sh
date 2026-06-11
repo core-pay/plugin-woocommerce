@@ -9,7 +9,7 @@ if [[ -z "${VERSION}" ]]; then
 fi
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PLUGIN_SLUG="${WPORG_PLUGIN_SLUG:-corepay-money-woocommerce}"
+PLUGIN_SLUG="${WPORG_PLUGIN_SLUG:-corepay-gateway-for-woocommerce}"
 SVN_USERNAME="${WPORG_SVN_USERNAME:-corelabs}"
 SVN_URL="https://plugins.svn.wordpress.org/${PLUGIN_SLUG}/"
 BUILD_DIR="${WPORG_SVN_BUILD_DIR:-${ROOT_DIR}/.wordpress-org/svn}"

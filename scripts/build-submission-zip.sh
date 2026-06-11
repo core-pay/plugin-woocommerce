@@ -3,7 +3,7 @@ set -euo pipefail
 
 VERSION="${1:-}"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PLUGIN_SLUG="${WPORG_PLUGIN_SLUG:-corepay-money-woocommerce}"
+PLUGIN_SLUG="${WPORG_PLUGIN_SLUG:-corepay-gateway-for-woocommerce}"
 DIST_ROOT="${ROOT_DIR}/.dist"
 PACKAGE_DIR="${DIST_ROOT}/${PLUGIN_SLUG}"
 
