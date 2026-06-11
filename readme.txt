@@ -1,10 +1,10 @@
-=== CorePay Money for WooCommerce ===
-Contributors: corepay
+=== CorePay Gateway for WooCommerce ===
+Contributors: corelabs, corepay
 Tags: woocommerce, payments, payment-gateway, checkout, subscriptions
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires Plugins: woocommerce
@@ -13,7 +13,7 @@ Accept WooCommerce payments through the CorePay Money hosted payment widget.
 
 == Description ==
 
-CorePay Money for WooCommerce adds CorePay Money as a WooCommerce payment gateway for product checkout and subscription payments.
+CorePay Gateway for WooCommerce adds CorePay Money as a WooCommerce payment gateway for product checkout and subscription payments.
 
 The plugin creates WooCommerce orders, renders the CorePay Money hosted widget on the order payment page, and waits for signed webhook callbacks before marking orders paid.
 
@@ -55,7 +55,7 @@ Use of this plugin requires a CorePay Money account/provider configuration. See 
 
 == Installation ==
 
-1. Upload the plugin files to `/wp-content/plugins/corepay-money-woocommerce`, or install the plugin through the WordPress plugins screen.
+1. Upload the plugin files to `/wp-content/plugins/corepay-gateway-for-woocommerce`, or install the plugin through the WordPress plugins screen.
 2. Activate the plugin through the Plugins screen in WordPress.
 3. Go to WooCommerce > Settings > Payments > CorePay Money.
 4. Enable the gateway.
@@ -95,6 +95,12 @@ Yes. CorePay webhook signatures use Ed25519 / EdDSA verification, which requires
 5. Successful CorePay Money payment confirmation.
 
 == Changelog ==
+
+= 0.1.1 =
+
+* Updated plugin name and text domain for WordPress.org review.
+* Avoided storing raw webhook request bodies in debug logs.
+* Sanitized decoded webhook payload data before use and storage.
 
 = 0.1.0 =
 

@@ -25,11 +25,19 @@ class CorePay_Money_Webhook {
 			self::respond( array( 'error' => 'gateway_unavailable' ), 503 );
 		}
 
-		$gateway->log( 'Webhook received.', array( 'body' => $raw_body ) );
+		$gateway->log(
+			'Webhook received.',
+			array(
+				'body_length' => strlen( $raw_body ),
+				'body_sha256' => hash( 'sha256', $raw_body ),
+			)
+		);
 
 		if ( ! is_array( $payload ) ) {
 			self::respond( array( 'error' => 'invalid_json' ), 400 );
 		}
+
+		$payload = self::sanitize_payload( $payload );
 
 		if ( ! self::verify_signature( $raw_body, $gateway ) ) {
 			$gateway->log( 'Webhook signature failed.' );
@@ -69,9 +77,9 @@ class CorePay_Money_Webhook {
 		if ( in_array( $status, array( 'paid', 'payment_paid', 'completed', 'complete', 'success', 'succeeded' ), true ) ) {
 			self::complete_order( $order, $gateway, $amount, $currency, $transaction_id );
 		} elseif ( in_array( $status, array( 'failed', 'failure', 'cancelled', 'canceled', 'expired' ), true ) ) {
-			$order->update_status( 'failed', __( 'CorePay Money payment failed or expired.', 'corepay-money-for-woocommerce' ) );
+			$order->update_status( 'failed', __( 'CorePay Money payment failed or expired.', 'corepay-gateway-for-woocommerce' ) );
 		} else {
-			$order->add_order_note( sprintf( /* translators: %s: webhook status */ __( 'CorePay Money webhook received with status: %s', 'corepay-money-for-woocommerce' ), $status ? $status : __( 'unknown', 'corepay-money-for-woocommerce' ) ) );
+			$order->add_order_note( sprintf( /* translators: %s: webhook status */ __( 'CorePay Money webhook received with status: %s', 'corepay-gateway-for-woocommerce' ), $status ? $status : __( 'unknown', 'corepay-gateway-for-woocommerce' ) ) );
 			$order->save();
 		}
 
@@ -342,20 +350,20 @@ class CorePay_Money_Webhook {
 		$paid_amount = null !== $amount ? wc_format_decimal( $amount, wc_get_price_decimals() ) : '';
 
 		if ( '' !== $paid_amount && $paid_amount !== $expected_amount ) {
-			$order->update_status( 'on-hold', sprintf( /* translators: 1: paid amount, 2: expected amount */ __( 'CorePay Money amount mismatch. Paid %1$s, expected %2$s.', 'corepay-money-for-woocommerce' ), $paid_amount, $expected_amount ) );
+			$order->update_status( 'on-hold', sprintf( /* translators: 1: paid amount, 2: expected amount */ __( 'CorePay Money amount mismatch. Paid %1$s, expected %2$s.', 'corepay-gateway-for-woocommerce' ), $paid_amount, $expected_amount ) );
 			return;
 		}
 
 		if ( '' !== $currency && $currency !== $expected_currency ) {
-			$order->update_status( 'on-hold', sprintf( /* translators: 1: paid currency, 2: expected currency */ __( 'CorePay Money currency mismatch. Paid %1$s, expected %2$s.', 'corepay-money-for-woocommerce' ), $currency, $expected_currency ) );
+			$order->update_status( 'on-hold', sprintf( /* translators: 1: paid currency, 2: expected currency */ __( 'CorePay Money currency mismatch. Paid %1$s, expected %2$s.', 'corepay-gateway-for-woocommerce' ), $currency, $expected_currency ) );
 			return;
 		}
 
 		if ( ! $order->is_paid() ) {
 			$order->payment_complete( $transaction_id );
-			$order->add_order_note( __( 'CorePay Money webhook confirmed payment.', 'corepay-money-for-woocommerce' ) );
+			$order->add_order_note( __( 'CorePay Money webhook confirmed payment.', 'corepay-gateway-for-woocommerce' ) );
 		} else {
-			$order->add_order_note( __( 'Duplicate CorePay Money payment webhook ignored; order is already paid.', 'corepay-money-for-woocommerce' ) );
+			$order->add_order_note( __( 'Duplicate CorePay Money payment webhook ignored; order is already paid.', 'corepay-gateway-for-woocommerce' ) );
 			$order->save();
 		}
 	}
@@ -390,6 +398,38 @@ class CorePay_Money_Webhook {
 			$subscription->update_meta_data( $meta_key, $meta_value );
 			$subscription->save();
 		}
+	}
+
+	/**
+	 * Sanitize decoded webhook payload data before storage or use.
+	 *
+	 * @param array $payload Decoded payload.
+	 * @return array
+	 */
+	private static function sanitize_payload( $payload ) {
+		$sanitized = array();
+
+		foreach ( $payload as $key => $value ) {
+			$sanitized_key = is_int( $key ) ? $key : sanitize_key( (string) $key );
+
+			if ( '' === $sanitized_key && ! is_int( $key ) ) {
+				continue;
+			}
+
+			if ( is_array( $value ) ) {
+				$sanitized[ $sanitized_key ] = self::sanitize_payload( $value );
+				continue;
+			}
+
+			if ( is_bool( $value ) || is_int( $value ) || is_float( $value ) || null === $value ) {
+				$sanitized[ $sanitized_key ] = $value;
+				continue;
+			}
+
+			$sanitized[ $sanitized_key ] = sanitize_text_field( (string) $value );
+		}
+
+		return $sanitized;
 	}
 
 	/**

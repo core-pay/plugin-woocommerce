@@ -1,4 +1,4 @@
-# CorePay Money for WooCommerce
+# CorePay Gateway for WooCommerce
 
 A WooCommerce payment gateway plugin by **CorePay** for processing one-time and recurring payments through the CorePay Money hosted widget at `corepay.money`.
 
@@ -31,8 +31,8 @@ The plugin creates a custom JSON payment payload at checkout, opens the CorePay 
 
 ## Installation
 
-1. Copy this repository into `wp-content/plugins/corepay-money-woocommerce`.
-2. Activate **CorePay Money for WooCommerce** in WordPress Admin → Plugins.
+1. Copy this repository into `wp-content/plugins/corepay-gateway-for-woocommerce`.
+2. Activate **CorePay Gateway for WooCommerce** in WordPress Admin → Plugins.
 3. Go to WooCommerce → Settings → Payments → CorePay Money.
 4. Enable the gateway and configure at least one complete provider row, currency, and signature key ID.
 
@@ -165,9 +165,9 @@ The widget receives a `custom_json` form field with this shape:
         "name": "Customer Name"
     },
     "additional_data": {
-        "plugin": "corepay-money-woocommerce",
+        "plugin": "corepay-gateway-for-woocommerce",
         "shop": "example.com",
-        "version": "0.1.0"
+        "version": "0.1.1"
     }
 }
 ```
@@ -255,7 +255,7 @@ This repository uses the standard plugin-root layout for Git development:
 Deploy to WordPress.org SVN:
 
 ```sh
-npm run deploy:wporg -- 0.1.0
+npm run deploy:wporg -- 0.1.1
 ```
 
 The deployment script syncs plugin files into SVN `trunk`, syncs `.wordpress-org/assets` into SVN top-level `assets`, creates a version tag, shows `svn status`, and commits.
