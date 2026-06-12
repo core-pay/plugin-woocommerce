@@ -82,7 +82,7 @@ final class CorePay_Money_Blocks extends AbstractPaymentMethodType {
 		return array(
 			'title'       => $this->gateway ? $this->gateway->title : $this->get_setting( 'title', __( 'CorePay Money', 'corepay-gateway-for-woocommerce' ) ),
 			'description' => $this->gateway ? $this->gateway->description : $this->get_setting( 'description', __( 'Pay securely with CorePay Money.', 'corepay-gateway-for-woocommerce' ) ),
-			'icon'        => 'https://corecdn.info/mark/64/corepay.svg',
+			'icon'        => COREPAY_MONEY_WC_URL . 'assets/corepay.svg',
 			'supports'    => $this->gateway ? $this->gateway->supports : array( 'products' ),
 		);
 	}
