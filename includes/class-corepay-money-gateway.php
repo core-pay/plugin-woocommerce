@@ -67,7 +67,7 @@ class CorePay_Money_Gateway extends WC_Payment_Gateway {
 	 */
 	public function __construct() {
 		$this->id                 = 'corepay_money';
-		$this->icon               = 'https://corecdn.info/mark/64/corepay.svg';
+		$this->icon               = COREPAY_MONEY_WC_URL . 'assets/corepay.svg';
 		$this->has_fields         = false;
 		$this->method_title       = __( 'CorePay Money', 'corepay-gateway-for-woocommerce' );
 		$this->method_description = __( 'Process product payments through the CorePay Money hosted widget.', 'corepay-gateway-for-woocommerce' );

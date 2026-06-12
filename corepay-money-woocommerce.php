@@ -3,7 +3,7 @@
  * Plugin Name: CorePay Gateway for WooCommerce
  * Plugin URI: https://github.com/core-pay/plugin-woocommerce
  * Description: Accept WooCommerce payments through the CorePay Money hosted widget using custom JSON payloads and webhook confirmations.
- * Version: 0.1.1
+ * Version: 0.1.2
  * Author: CorePay
  * Author URI: https://corepay.money
  * Text Domain: corepay-gateway-for-woocommerce
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'COREPAY_MONEY_WC_VERSION', '0.1.1' );
+define( 'COREPAY_MONEY_WC_VERSION', '0.1.2' );
 define( 'COREPAY_MONEY_WC_FILE', __FILE__ );
 define( 'COREPAY_MONEY_WC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'COREPAY_MONEY_WC_URL', plugin_dir_url( __FILE__ ) );

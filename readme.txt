@@ -4,7 +4,7 @@ Tags: woocommerce, payments, payment-gateway, checkout, subscriptions
 Requires at least: 6.4
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires Plugins: woocommerce
@@ -95,6 +95,10 @@ Yes. CorePay webhook signatures use Ed25519 / EdDSA verification, which requires
 5. Successful CorePay Money payment confirmation.
 
 == Changelog ==
+
+= 0.1.2 =
+
+* Bundled the CorePay payment method icon locally for WordPress.org review compliance.
 
 = 0.1.1 =
 
