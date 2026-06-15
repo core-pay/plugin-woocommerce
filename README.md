@@ -167,7 +167,7 @@ The widget receives a `custom_json` form field with this shape:
     "additional_data": {
         "plugin": "corepay-gateway-for-woocommerce",
         "shop": "example.com",
-        "version": "0.1.2"
+        "version": "0.1.3"
     }
 }
 ```
@@ -255,7 +255,7 @@ This repository uses the standard plugin-root layout for Git development:
 Deploy to WordPress.org SVN:
 
 ```sh
-npm run deploy:wporg -- 0.1.2
+npm run deploy:wporg -- 0.1.3
 ```
 
 The deployment script syncs plugin files into SVN `trunk`, syncs `.wordpress-org/assets` into SVN top-level `assets`, creates a version tag, shows `svn status`, and commits.

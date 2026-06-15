@@ -16,6 +16,7 @@ Icon
 *~
 
 # WordPress/package artifacts
+/.wordpress-org/svn/
 /vendor/
 /node_modules/
 /dist/
