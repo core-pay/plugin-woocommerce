@@ -32,8 +32,10 @@ rsync -av --delete "${ROOT_DIR}/" "${BUILD_DIR}/trunk/" \
 	--exclude='.github' \
 	--exclude='.gitignore' \
 	--exclude='.wordpress-org' \
+	--exclude='.dist' \
 	--exclude='scripts' \
 	--exclude='README.md' \
+	--exclude='package.json' \
 	--exclude='node_modules' \
 	--exclude='vendor' \
 	--exclude='*.zip' \
