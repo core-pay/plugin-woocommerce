@@ -23,6 +23,7 @@ rsync -av "${ROOT_DIR}/" "${PACKAGE_DIR}/" \
 	--exclude='.wordpress-org' \
 	--exclude='scripts' \
 	--exclude='README.md' \
+	--exclude='package.json' \
 	--exclude='node_modules' \
 	--exclude='vendor' \
 	--exclude='.dist' \
